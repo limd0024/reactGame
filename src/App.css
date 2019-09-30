@@ -1,0 +1,55 @@
+.App {
+  text-align: center;
+}
+
+#container{
+  margin: 0 auto;
+  width: 1080px;
+}
+.square {
+  background-image: url(images/BattleFieldImg.jpg);
+  border: 1px solid #999;
+  float: left;
+  height: 50px;
+  width: 50px;
+}
+
+.board-row{
+  width:500px;
+}
+
+#optionPanel{
+  border-style: double;
+  border-width: 5px;
+  min-height: 100px;
+}
+
+#battleshipOption{
+  border-style: single;
+  border-width: 2px;
+  min-height: 50px;
+}
+
+#rotatabtn{
+  margin: 5px;
+  visibility: hidden;
+}
+
+#deselectbtn{
+  margin: 5px;
+  visibility: hidden;
+}
+
+#battleFieldGrid{
+  float: left;
+  margin-left:5%;
+}
+
+#infoDisplay{
+  float:left;
+}
+
+.centerItem{
+  display: flex;
+  justify-content: center;
+}

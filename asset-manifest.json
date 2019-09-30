@@ -1,0 +1,18 @@
+{
+  "files": {
+    "main.css": "/reactGame/static/css/main.8f2004ee.chunk.css",
+    "main.js": "/reactGame/static/js/main.79115535.chunk.js",
+    "main.js.map": "/reactGame/static/js/main.79115535.chunk.js.map",
+    "runtime~main.js": "/reactGame/static/js/runtime~main.e8b1c48b.js",
+    "runtime~main.js.map": "/reactGame/static/js/runtime~main.e8b1c48b.js.map",
+    "static/css/2.266e55a5.chunk.css": "/reactGame/static/css/2.266e55a5.chunk.css",
+    "static/js/2.6b90180f.chunk.js": "/reactGame/static/js/2.6b90180f.chunk.js",
+    "static/js/2.6b90180f.chunk.js.map": "/reactGame/static/js/2.6b90180f.chunk.js.map",
+    "index.html": "/reactGame/index.html",
+    "precache-manifest.fe2996ccc7d52f01609d5e8017231f8d.js": "/reactGame/precache-manifest.fe2996ccc7d52f01609d5e8017231f8d.js",
+    "service-worker.js": "/reactGame/service-worker.js",
+    "static/css/2.266e55a5.chunk.css.map": "/reactGame/static/css/2.266e55a5.chunk.css.map",
+    "static/css/main.8f2004ee.chunk.css.map": "/reactGame/static/css/main.8f2004ee.chunk.css.map",
+    "static/media/App.css": "/reactGame/static/media/BattleFieldImg.8817e863.jpg"
+  }
+}

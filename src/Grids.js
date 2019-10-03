@@ -7,8 +7,8 @@ class Grids extends Component{
     return (
       <Grid 
         coordinate={i}
-        onDrop={(event) => this.props.onDrop(event)} 
-        onDragOver={(event) => this.props.onDragOver(event)}
+        onDrop={this.props.onDrop} 
+        onDragOver={this.props.onDragOver}
       />
     );
   }

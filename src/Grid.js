@@ -6,8 +6,8 @@ class Grid extends Component{
     return (
       <button id={this.props.coordinate}
               className="square"
-              onDrop={(event) => this.props.onDrop(event)}
-              onDragOver={(event) => this.props.onDragOver(event)}
+              onDrop={this.props.onDrop}
+              onDragOver={this.props.onDragOver}
       >
       </button>
     );

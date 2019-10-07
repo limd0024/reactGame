@@ -1,18 +1,22 @@
 {
   "files": {
-    "main.css": "/reactGame/static/css/main.8f2004ee.chunk.css",
-    "main.js": "/reactGame/static/js/main.47164f26.chunk.js",
-    "main.js.map": "/reactGame/static/js/main.47164f26.chunk.js.map",
+    "main.css": "/reactGame/static/css/main.7443e092.chunk.css",
+    "main.js": "/reactGame/static/js/main.48ef2ab5.chunk.js",
+    "main.js.map": "/reactGame/static/js/main.48ef2ab5.chunk.js.map",
     "runtime~main.js": "/reactGame/static/js/runtime~main.e8b1c48b.js",
     "runtime~main.js.map": "/reactGame/static/js/runtime~main.e8b1c48b.js.map",
     "static/css/2.266e55a5.chunk.css": "/reactGame/static/css/2.266e55a5.chunk.css",
-    "static/js/2.17d5b181.chunk.js": "/reactGame/static/js/2.17d5b181.chunk.js",
-    "static/js/2.17d5b181.chunk.js.map": "/reactGame/static/js/2.17d5b181.chunk.js.map",
+    "static/js/2.8008d173.chunk.js": "/reactGame/static/js/2.8008d173.chunk.js",
+    "static/js/2.8008d173.chunk.js.map": "/reactGame/static/js/2.8008d173.chunk.js.map",
     "index.html": "/reactGame/index.html",
-    "precache-manifest.35596dd37ec73477d2c694b129680240.js": "/reactGame/precache-manifest.35596dd37ec73477d2c694b129680240.js",
+    "precache-manifest.514019a005fc9a1d2a214e4ec1f9f4ed.js": "/reactGame/precache-manifest.514019a005fc9a1d2a214e4ec1f9f4ed.js",
     "service-worker.js": "/reactGame/service-worker.js",
     "static/css/2.266e55a5.chunk.css.map": "/reactGame/static/css/2.266e55a5.chunk.css.map",
-    "static/css/main.8f2004ee.chunk.css.map": "/reactGame/static/css/main.8f2004ee.chunk.css.map",
-    "static/media/App.css": "/reactGame/static/media/BattleFieldImg.8817e863.jpg"
+    "static/css/main.7443e092.chunk.css.map": "/reactGame/static/css/main.7443e092.chunk.css.map",
+    "static/media/App.css": "/reactGame/static/media/BattleFieldImg.8817e863.jpg",
+    "static/media/battleShip1_0_Degree.png": "/reactGame/static/media/battleShip1_0_Degree.482985fe.png",
+    "static/media/battleShip1_180_Degree.png": "/reactGame/static/media/battleShip1_180_Degree.a8cc23af.png",
+    "static/media/battleShip1_270_Degree.png": "/reactGame/static/media/battleShip1_270_Degree.68e4b431.png",
+    "static/media/battleShip1_90_Degree.png": "/reactGame/static/media/battleShip1_90_Degree.acebc6f5.png"
   }
 }

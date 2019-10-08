@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "0a484ae435382e7343390f8f21582315",
+    "revision": "1f03a0a09a7e10ffe4dddb21a64fe433",
     "url": "/reactGame/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/reactGame/static/css/2.266e55a5.chunk.css"
   },
   {
-    "revision": "6642c9caff2d1b3ec4d1",
+    "revision": "d645a8845c7c129e7643",
     "url": "/reactGame/static/css/main.7443e092.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/reactGame/static/js/2.8008d173.chunk.js"
   },
   {
-    "revision": "6642c9caff2d1b3ec4d1",
-    "url": "/reactGame/static/js/main.48ef2ab5.chunk.js"
+    "revision": "d645a8845c7c129e7643",
+    "url": "/reactGame/static/js/main.3e8ef031.chunk.js"
   },
   {
     "revision": "0df363fb1d4938da3f6b",

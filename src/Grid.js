@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import ImageParts from './ImageParts';
 
 class Grid extends Component{
   render(){

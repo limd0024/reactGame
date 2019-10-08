@@ -2,25 +2,29 @@ import React, { Component } from 'react';
 import './App.css';
 import Grids from "./Grids";
 import RotatableImage from "./RotatableImage";
+import ImageParts from './ImageParts';
+import ReactDOM from 'react-dom';
 
 class Board extends Component{
     constructor(props){
         super(props);
         this.state = {
-          record: Array(10).fill(Array(10).fill("empty")),
-          rotateImage: [0, 0, 0, 0, 0],
-          gridObj: {
-                        a: 1,
-                        b: 2,
-                        c: 3,
-                        d: 4,
-                        e: 5,
-                        f: 6,
-                        g: 7,
-                        h: 8,
-                        i: 9,
-                        j: 10
-                }
+            show: Array(4).fill(true),
+            record: Array(10).fill(0).map(row => Array(10).fill("empty")),
+            rotateImage: [0, 0, 0, 0, 0],
+            gridObj: {
+                a: 1,
+                b: 2,
+                c: 3,
+                d: 4,
+                e: 5,
+                f: 6,
+                g: 7,
+                h: 8,
+                i: 9,
+                j: 10
+            },
+            ImageDrag: Array(5).fill(null),
         }
     }
 
@@ -34,17 +38,23 @@ class Board extends Component{
                             onDrop={(event) => this.drop(event)} 
                             onDragOver={(event) => this.allowDrop(event)}
                     >
+                        { this.state.show[0] && 
                         <RotatableImage id="battleShip1"
                                         arr={this.addImage("battleShip1")}
                                         rotate = {this.state.rotateImage}
                                         onClick={(event) => this.rotate(event)}
+                                        class="bs1"
 
                         />
+                         }
+                         { this.state.show[1] &&
                         <RotatableImage id="battleShip2"
                                         arr={this.addImage("battleShip2")}
                                         rotate = {this.state.rotateImage}
                                         onClick={(event) => this.rotate(event)}
+                                        class="bs2"
                         />
+                         }
                     </div>
                 </div>
 
@@ -65,14 +75,14 @@ class Board extends Component{
         );
     }
     
-    findRotataIndex(id){
-        switch(id){
-                case "battleShip1": return 0;
-                case "battleShip2": return 1;
-                case "battleShip3": return 2;
-                case "battleShip4": return 3;
-                case "battleShip5": return 4;
-                default: break;
+    findRotataIndex(classId){
+        switch(classId){
+            case "bs1": return 0;
+            case "bs2": return 1;
+            case "bs3": return 2;
+            case "bs4": return 3;
+            case "bs5": return 4;
+            default: break;
         }
     }
 
@@ -80,7 +90,7 @@ class Board extends Component{
         //rotate the ship only if the ship is in the battleshipOption container
         if(event.target.parentNode.id === "battleshipOption"){
             var ship;
-            ship = this.findRotataIndex(event.target.id);
+            ship = this.findRotataIndex(event.target.className);
             let newRotation = this.state.rotateImage;
             newRotation[ship] += 1 
             if(newRotation[ship] >= 4){
@@ -95,15 +105,15 @@ class Board extends Component{
     addImage(id){
         var arr;
         switch(id){
-            case "battleShip1": arr = [     require("./images/battleShip1_0_Degree.png"), 
-                                            require("./images/battleShip1_90_Degree.png"), 
-                                            require("./images/battleShip1_180_Degree.png"), 
-                                            require("./images/battleShip1_270_Degree.png")]
+            case "battleShip1": arr = [ require("./images/battleShip1_0_Degree.png"), 
+                                        require("./images/battleShip1_90_Degree.png"), 
+                                        require("./images/battleShip1_180_Degree.png"), 
+                                        require("./images/battleShip1_270_Degree.png")]
                                 break;
-            case "battleShip2": arr = [     require("./images/battleShip2_0_Degree.png"), 
-                                            require("./images/battleShip2_90_Degree.png"), 
-                                            require("./images/battleShip2_180_Degree.png"), 
-                                            require("./images/battleShip2_270_Degree.png")]
+            case "battleShip2": arr = [ require("./images/battleShip2_0_Degree.png"), 
+                                        require("./images/battleShip2_90_Degree.png"), 
+                                        require("./images/battleShip2_180_Degree.png"), 
+                                        require("./images/battleShip2_270_Degree.png")]
                                 break;
             default:    arr = []
         }
@@ -114,8 +124,29 @@ class Board extends Component{
         event.preventDefault();
     }
     
+    toggleShowState(classId, state){
+        let showState = this.state.show;
+        switch(classId){
+            case 'bs1': showState[0] = state;
+                        this.setState({ show: showState, });
+                        break;
+            case 'bs2': showState[1] = state;
+                        this.setState({ show: showState, });
+                        break;
+            case 'bs3': showState[2] = state;
+                        this.setState({ show: showState, });
+                        break;
+            case 'bs4': showState[3] = state;
+                        this.setState({ show: showState, });
+                        break;
+            case 'bs5': showState[4] = state;
+                        this.setState({ show: showState, });
+                        break;
+        }
+    }
+
     drop(event) {
-        var ships = ["battleShip1", "battleShip2", "battleShip3", "battleShip4", "battleShip5"]
+        var ships = ["bs1", "bs2", "bs3", "bs4", "bs5"]
         event.preventDefault();
         var data = event.dataTransfer.getData("text");
         //check if dragged and drop into the same container
@@ -124,15 +155,16 @@ class Board extends Component{
             //check if image is dragged and being drop on another image
             var imageTag = false;
             ships.forEach(function(ship){
-                if(event.target.id === ship){
-                        imageTag = true;
+                if(event.target.className === ship){
+                    imageTag = true;
                 }
             });
             if(!imageTag){
                 if(event.target.id != "battleshipOption"){//dropping in one of the grid
-                        console.log(this.fillGrid(data, event.target.id));
+                    this.fillGrid(document.getElementById(data), document.getElementById(data).className, event.target.id);
                 }else{//dropping back into the battleshipOption container
-                        event.target.appendChild(document.getElementById(data));
+                    this.toggleShowState(document.getElementById(data).className, true);
+                    this.unrenderShip(document.getElementById(data).className);
                 }
             }
         }
@@ -143,74 +175,98 @@ class Board extends Component{
         var row = null;
         var col = null;
         if(len == 2){
-                row = parseInt(gridId[0]);
-                col = this.state.gridObj[gridId[1]];
+            row = parseInt(gridId[0]);
+            col = this.state.gridObj[gridId[1]];
         }else{
-                row = 10;
-                col = this.state.gridObj[gridId[2]];
+            row = 10;
+            col = this.state.gridObj[gridId[2]];
         }
         return [row, col];
     }
 
     modifyGrid(plus, value, gridId, orientation){
-        var coordinate = null;
+        var coordinate = this.gridToRowAndCol(gridId);
         //horizontal position
         if(orientation == "H"){
-                if(plus){
-                        coordinate = this.gridToRowAndCol(gridId);
-                        coordinate[1] += value;
-                        if((coordinate[1] > 10) || (coordinate[1] < 1)){
-                                return null;
-                        }else{
-                                return coordinate;
-                        } 
+            if(plus){
+                coordinate[1] += value;
+                if((coordinate[1] > 10) || (coordinate[1] < 1)){
+                    return null;
                 }else{
-                        coordinate = this.gridToRowAndCol(gridId);
-                        coordinate[1] -= value;
-                        if((coordinate[1] > 10) || (coordinate[1] < 1)){
-                                return null;
-                        }else{
-                                return coordinate;
-                        } 
-                }
+                    return coordinate;
+                } 
+            }else{
+                coordinate[1] -= value;
+                if((coordinate[1] > 10) || (coordinate[1] < 1)){
+                    return null;
+                }else{
+                    return coordinate;
+                } 
+            }
         //vertical position
         }else{
-                if(plus){
-                        coordinate = this.gridToRowAndCol(gridId);
-                        coordinate[0] += value;
-                        if((coordinate[0] > 10) || (coordinate[0] < 1)){
-                                return null;
-                        }else{
-                                return coordinate;
-                        }
+            if(plus){
+                coordinate[0] += value;
+                if((coordinate[0] > 10) || (coordinate[0] < 1)){
+                    return null;
                 }else{
-                        coordinate = this.gridToRowAndCol(gridId);
-                        coordinate[0] -= value;
-                        if((coordinate[0] > 10) || (coordinate[0] < 1)){
-                                return null;
-                        }else{
-                                return coordinate;
-                        }
+                    return coordinate;
                 }
+            }else{
+                coordinate[0] -= value;
+                if((coordinate[0] > 10) || (coordinate[0] < 1)){
+                    return null;
+                }else{
+                    return coordinate;
+                }
+            }
         }
     }
 
-    fillGrid(shipId, gridId){
-        var position = this.state.rotateImage[this.findRotataIndex(shipId)];
+    fillGrid(shipImage, classId, gridId){
+        var position = this.state.rotateImage[this.findRotataIndex(classId)];
         var outOfBound = false;
-        switch(shipId){
-                case 'battleShip1':     var grids = this.computeShip1Grid(position, gridId);
-                                        for(var i = 0; i < 5; i++){
-                                                if(grids[i] == null){
-                                                        outOfBound = true;
-                                                        break;
-                                                }
-                                        }
-                                        if(!outOfBound){
-                                                
-                                        }else{
-                                                
-                                        }
+        var grids = null;
+        switch(classId){
+            case 'bs1': grids = this.computeShip1Grid(position, gridId);
+                                break;
+            case 'bs2': grids = this.computeShip2Grid(position, gridId);   
+                                break;                 
+        }
+        for(var i = 0; i < grids.length; i++){
+            if(grids[i] == null){
+                outOfBound = true;
+                break;
+            }
+        }
+        if(!outOfBound){//ship will be within the grid
+            if( !(this.computeOverlap(grids)) ){//check if the grids are already occupied or not
+                var dragFromContainer = false;
+                switch(classId){
+                    case 'bs1': if(this.state.show[0]){
+                                    dragFromContainer = true;
+                                }
+                    case 'bs2': if(this.state.show[1]){
+                        dragFromContainer = true;
+                    }
+                    case 'bs3': if(this.state.show[2]){
+                        dragFromContainer = true;
+                    }
+                    case 'bs4': if(this.state.show[3]){
+                        dragFromContainer = true;
+                    }
+                    case 'bs5': if(this.state.show[4]){
+                        dragFromContainer = true;
+                    }
+                    default: dragFromContainer = false;
+                }     
+                this.renderSeparatePart(grids, classId, position, dragFromContainer, shipImage);          
+                this.toggleShowState(classId, false);
+            }else{
+                alert("Invalid placement, ship cannot be place because one or more ship will overlap a grid")
+            }
+        }else{//ship out of bound
+            alert("Invalid placement, ship will be out of bounds")
         }
     }
     
@@ -227,12 +283,157 @@ class Board extends Component{
         }
     }
 
-    computeOverlap(arr){
-        
+    computeShip2Grid(position, gridId){
+        switch(position){
+                case 0: 
+                case 2: return [this.modifyGrid(false, 1, gridId, "H"), this.gridToRowAndCol(gridId),
+                                this.modifyGrid(true, 1, gridId, "H")]
+                case 1: 
+                case 3: return [this.modifyGrid(false, 1, gridId, "V"), this.gridToRowAndCol(gridId),
+                                this.modifyGrid(true, 1, gridId, "V")]
+        }
     }
 
-    renderSeparatePart(targetGrid, shipId){
-        
+    computeOverlap(arr){
+        for(var i = 0; i < arr.length; i++){
+            var row = arr[i][0];
+            var col = arr[i][1];
+            if(this.state.record[row-1][col-1] != 'empty'){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    addSeparateImage(shipId){
+        var arr = null;
+        switch(shipId){
+            case "battleShip1": arr = [ require("./images/bs1_01.png"), 
+                                        require("./images/bs1_02.png"), 
+                                        require("./images/bs1_03.png"), 
+                                        require("./images/bs1_04.png"),
+                                        require("./images/bs1_05.png"),
+                                        require("./images/bs1_11.png"), 
+                                        require("./images/bs1_12.png"), 
+                                        require("./images/bs1_13.png"), 
+                                        require("./images/bs1_14.png"),
+                                        require("./images/bs1_15.png"),
+                                        require("./images/bs1_21.png"), 
+                                        require("./images/bs1_22.png"), 
+                                        require("./images/bs1_23.png"), 
+                                        require("./images/bs1_24.png"),
+                                        require("./images/bs1_25.png"),
+                                        require("./images/bs1_31.png"), 
+                                        require("./images/bs1_32.png"), 
+                                        require("./images/bs1_33.png"), 
+                                        require("./images/bs1_34.png"),
+                                        require("./images/bs1_35.png")]
+                                break;
+            case "battleShip2": arr = [ require("./images/bs2_01.png"), 
+                                        require("./images/bs2_02.png"), 
+                                        require("./images/bs2_03.png"),
+                                        require("./images/bs2_11.png"), 
+                                        require("./images/bs2_12.png"), 
+                                        require("./images/bs2_13.png"),
+                                        require("./images/bs2_21.png"), 
+                                        require("./images/bs2_22.png"), 
+                                        require("./images/bs2_23.png"),
+                                        require("./images/bs2_31.png"), 
+                                        require("./images/bs2_32.png"), 
+                                        require("./images/bs2_33.png")]
+                                break;
+            default:    arr = []
+        }
+        return arr;
+    }
+
+    rowAndColToGridId(coordinate){
+        var alphabet = Object.keys(this.state.gridObj).find(key => this.state.gridObj[key] === coordinate[1]);
+        return coordinate[0].toString() + alphabet;
+    }
+
+    setGridOccupied(value, grids){
+        let rec = this.state.record;
+        for(var i =0; i < grids.length; i++){
+            var row = grids[i][0];
+            var col = grids[i][1];
+            rec[row-1][col-1] = value;
+        }
+        this.setState({record: rec,});
+    }
+
+    renderSeparatePart(targetGrid, classId, position, dragFromContainer, shipImage){
+        switch(classId){
+            case 'bs1': this.renderShip1Part(position, targetGrid, dragFromContainer, shipImage);
+                        this.setGridOccupied('bs1', targetGrid);
+                        break;
+            case 'bs2': this.renderShip2Part(position, targetGrid, dragFromContainer, shipImage);
+                        this.setGridOccupied('bs2', targetGrid);
+                        break;
+        }
+    }
+
+    checkIfShipAlrOnGrid(value){
+        var arr = []
+        let rec = this.state.record;
+        for(var i = 0; i < 10; i++){
+            for(var j = 0; j < 10; j++){
+                if(rec[i][j] == value){
+                    arr.push([i+1, j+1]);
+                    rec[i][j] = "empty";
+                }
+            }
+        }
+        this.setState({record: rec})
+        return arr;
+    }
+
+    unrenderShip(shipToUnrender){
+        var checkArr = this.checkIfShipAlrOnGrid(shipToUnrender); // check if ship is already on the grid
+        var popArr = [] //grids to unrender ship parts
+        if(checkArr.length != 0){
+            for(var i = 0; i < checkArr.length; i++){
+                popArr.push(this.rowAndColToGridId(checkArr[i]))
+            }
+            for(var i = 0; i < popArr.length; i++){
+                ReactDOM.unmountComponentAtNode(document.getElementById(popArr[i]));
+            }
+        }
+    }
+
+    renderShip1Part(position, targetGrid, dragFromContainer, shipImage){
+        this.unrenderShip('bs1');
+        var pushArr = [] //grids to render ship parts
+        for(var i = 0; i < targetGrid.length; i++){//get all the gridId
+            pushArr.push(this.rowAndColToGridId(targetGrid[i]));
+        }
+        for(i = 0; i < pushArr.length; i++){
+            ReactDOM.render(<ImageParts id={'bs1_' + i} 
+                                        src={this.addSeparateImage("battleShip1")} 
+                                        rotate={position} ship="battleShip1" 
+                                        partNo={i} 
+                                        class="bs1"
+                                        shipImg={dragFromContainer ? shipImage : null}
+                            />, 
+                            document.getElementById(pushArr[i]));
+        }
+    }
+
+    renderShip2Part(position, targetGrid){
+        this.unrenderShip('bs2');
+        var pushArr = [] //grids to render ship parts
+        for(var i = 0; i < targetGrid.length; i++){//get all the gridId
+            pushArr.push(this.rowAndColToGridId(targetGrid[i]));
+        }
+        for(i = 0; i < pushArr.length; i++){
+            ReactDOM.render(<ImageParts id={'bs2_' + i} 
+                                        src={this.addSeparateImage("battleShip2")} 
+                                        rotate={position} ship="battleShip2" 
+                                        partNo={i}
+                                        class="bs2"
+                            />, 
+                            document.getElementById(pushArr[i]));
+        }
     }
 }
 

@@ -6,6 +6,7 @@
   margin: 0 auto;
   width: 1080px;
 }
+
 .square {
   background-image: url(images/BattleFieldImg.jpg);
   border: 1px solid #999;
@@ -30,16 +31,6 @@
   min-height: 50px;
 }
 
-#rotatabtn{
-  margin: 5px;
-  visibility: hidden;
-}
-
-#deselectbtn{
-  margin: 5px;
-  visibility: hidden;
-}
-
 #battleFieldGrid{
   float: left;
   margin-left:5%;
@@ -49,7 +40,6 @@
   float:left;
 }
 
-.centerItem{
-  display: flex;
-  justify-content: center;
+.bs1, .bs2, .bs3, .bs4, .bs5{
+  margin-left: -6px;
 }

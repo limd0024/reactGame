@@ -1,14 +1,20 @@
 import React, { Component } from 'react';
 
-class RotatableImage extends Component{
-    
+class ImageParts extends Component{
+    constructor(props){
+        super(props);
+        this.state = {
+                originalShipImage: null
+        }
+    }
+
     dragStart(event) {
         event.dataTransfer.setData("text", event.target.id);
         switch(event.target.id){
             case "battleShip1": if((this.props.rotate[0] % 2) === 0){
-                                  event.dataTransfer.setDragImage(document.getElementById(event.target.id), 75, 22.5);
+                                  event.dataTransfer.setDragImage(this.props.shipImg, 75, 22.5);
                                 }else{
-                                  event.dataTransfer.setDragImage(document.getElementById(event.target.id), 25, 75);
+                                  event.dataTransfer.setDragImage(this.props.shipImg, 25, 75);
                                 } 
                                 break;
             case "battleShip2": if((this.props.rotate[1] % 2) === 0){
@@ -27,21 +33,19 @@ class RotatableImage extends Component{
         }
     }
 
-    displayImage(arr, id, rotate){
-      switch(id){
-        case "battleShip1": return arr[rotate[0]];
-        case "battleShip2": return arr[rotate[1]];
-        case "battleShip3": return arr[rotate[2]];
-        case "battleShip4": return arr[rotate[3]];
-        case "battleShip5": return arr[rotate[4]];
-        default: return null;
-    }
+    displayImage(arr, id, rotate, partNo){
+        switch(id){
+            case "battleShip1": rotate *= 5 // multiple by the ship lenght
+                                return arr[rotate+partNo];
+            case "battleShip2": rotate *= 3 // multiple by the ship lenght
+                                return arr[rotate+partNo];
+            default: return null;
+        }
     }
     render(){
       return (
-        <img    src={this.displayImage(this.props.arr, this.props.id, this.props.rotate)}
-                onClick={(event) => this.props.onClick(event)}
-                id={this.props.id}
+        <img    src={this.displayImage(this.props.src, this.props.ship, this.props.rotate, this.props.partNo)}
+                id = {this.props.id}
                 onDragStart={(event) => this.dragStart(event)}
                 draggable="true" 
                 className={this.props.class}
@@ -50,4 +54,4 @@ class RotatableImage extends Component{
     }
   }
   
-export default RotatableImage;
+export default ImageParts;

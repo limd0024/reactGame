@@ -6,9 +6,9 @@ class RotatableImage extends Component{
         event.dataTransfer.setData("text", event.target.id);
         switch(event.target.id){
             case "battleShip1": if((this.props.rotate[0] % 2) === 0){
-                                  event.dataTransfer.setDragImage(document.getElementById(event.target.id), 75, 22.5);
+                                  event.dataTransfer.setDragImage(document.getElementById(event.target.id), 125, 25);
                                 }else{
-                                  event.dataTransfer.setDragImage(document.getElementById(event.target.id), 25, 75);
+                                  event.dataTransfer.setDragImage(document.getElementById(event.target.id), 25, 125);
                                 } 
                                 break;
             case "battleShip2": if((this.props.rotate[1] % 2) === 0){

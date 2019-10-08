@@ -3,31 +3,28 @@ import React, { Component } from 'react';
 class ImageParts extends Component{
     constructor(props){
         super(props);
-        this.state = {
-                originalShipImage: null
-        }
     }
 
     dragStart(event) {
         event.dataTransfer.setData("text", event.target.id);
-        switch(event.target.id){
-            case "battleShip1": if((this.props.rotate[0] % 2) === 0){
-                                  event.dataTransfer.setDragImage(this.props.shipImg, 75, 22.5);
-                                }else{
-                                  event.dataTransfer.setDragImage(this.props.shipImg, 25, 75);
-                                } 
+        switch(event.target.className){
+            case "bs1": if((this.props.rotate % 2) === 0){
+                          event.dataTransfer.setDragImage(this.props.shipImg, 125, 25);
+                        }else{
+                          event.dataTransfer.setDragImage(this.props.shipImg, 25, 125);
+                        } 
+                        break;
+            case "bs2": if((this.props.rotate % 2) === 0){
+                          event.dataTransfer.setDragImage(this.props.shipImg, 70, 22.5);
+                        }else{
+                          event.dataTransfer.setDragImage(this.props.shipImg, 25, 75);
+                        }
+                        break;
+            case "bs3": event.dataTransfer.setDragImage(document.getElementById(event.target.id), 70, 22.5);
                                 break;
-            case "battleShip2": if((this.props.rotate[1] % 2) === 0){
-                                  event.dataTransfer.setDragImage(document.getElementById(event.target.id), 70, 22.5);
-                                }else{
-                                  event.dataTransfer.setDragImage(document.getElementById(event.target.id), 25, 75);
-                                }
+            case "bs4": event.dataTransfer.setDragImage(document.getElementById(event.target.id), 70, 22.5);
                                 break;
-            case "battleShip3": event.dataTransfer.setDragImage(document.getElementById(event.target.id), 70, 22.5);
-                                break;
-            case "battleShip4": event.dataTransfer.setDragImage(document.getElementById(event.target.id), 70, 22.5);
-                                break;
-            case "battleShip5": event.dataTransfer.setDragImage(document.getElementById(event.target.id), 70, 22.5);
+            case "bs5": event.dataTransfer.setDragImage(document.getElementById(event.target.id), 70, 22.5);
                                 break;
             default: break;
         }
@@ -42,6 +39,7 @@ class ImageParts extends Component{
             default: return null;
         }
     }
+
     render(){
       return (
         <img    src={this.displayImage(this.props.src, this.props.ship, this.props.rotate, this.props.partNo)}

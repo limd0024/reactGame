@@ -152,20 +152,23 @@ class Board extends Component{
         //check if dragged and drop into the same container
         var check = event.target.contains(document.getElementById(data));
         if(!check){
-            //check if image is dragged and being drop on another image
             var imageTag = false;
             ships.forEach(function(ship){
                 if(event.target.className === ship){
                     imageTag = true;
                 }
             });
-            if(!imageTag){
-                if(event.target.id != "battleshipOption"){//dropping in one of the grid
-                    this.fillGrid(document.getElementById(data), document.getElementById(data).className, event.target.id);
-                }else{//dropping back into the battleshipOption container
-                    this.toggleShowState(document.getElementById(data).className, true);
-                    this.unrenderShip(document.getElementById(data).className);
+            var gridId = event.target.id;
+            //dropping in one of the grid and not on the battleshipOption container or images that are in the battleshipOption container
+            if( (event.target.id != "battleshipOption") &&
+            (document.getElementById(gridId).parentNode.id != "battleshipOption")){
+                if(imageTag){
+                    gridId = document.getElementById(gridId).parentNode.id;
                 }
+                this.fillGrid(document.getElementById(data), document.getElementById(data).className, gridId);
+            }else{//dropping back into the battleshipOption container
+                this.toggleShowState(document.getElementById(data).className, true);
+                this.unrenderShip(document.getElementById(data).className);
             }
         }
     }
@@ -240,27 +243,41 @@ class Board extends Component{
             }
         }
         if(!outOfBound){//ship will be within the grid
-            if( !(this.computeOverlap(grids)) ){//check if the grids are already occupied or not
-                var dragFromContainer = false;
+            if( !(this.computeOverlap(grids, classId)) ){//check if the grids are already occupied or not
                 switch(classId){
                     case 'bs1': if(this.state.show[0]){
-                                    dragFromContainer = true;
+                                    let shipImg = this.state.ImageDrag;
+                                    shipImg[0] = shipImage;
+                                    this.setState({ ImageDrag: shipImg})
                                 }
+                                break;
                     case 'bs2': if(this.state.show[1]){
-                        dragFromContainer = true;
-                    }
+                                    let shipImg = this.state.ImageDrag;
+                                    shipImg[1] = shipImage;
+                                    this.setState({ ImageDrag: shipImg})
+                                }
+                                break;
                     case 'bs3': if(this.state.show[2]){
-                        dragFromContainer = true;
-                    }
+                                    let shipImg = this.state.ImageDrag;
+                                    shipImg[2] = shipImage;
+                                    this.setState({ ImageDrag: shipImg})
+                                }
+                                break;
                     case 'bs4': if(this.state.show[3]){
-                        dragFromContainer = true;
-                    }
+                                    let shipImg = this.state.ImageDrag;
+                                    shipImg[3] = shipImage;
+                                    this.setState({ ImageDrag: shipImg})
+                                }
+                                break;
                     case 'bs5': if(this.state.show[4]){
-                        dragFromContainer = true;
-                    }
-                    default: dragFromContainer = false;
-                }     
-                this.renderSeparatePart(grids, classId, position, dragFromContainer, shipImage);          
+                                    let shipImg = this.state.ImageDrag;
+                                    shipImg[4] = shipImage;
+                                    this.setState({ ImageDrag: shipImg})
+                                }
+                                break;
+                    default: break;
+                }  
+                this.renderSeparatePart(grids, classId, position);          
                 this.toggleShowState(classId, false);
             }else{
                 alert("Invalid placement, ship cannot be place because one or more ship will overlap a grid")
@@ -273,13 +290,13 @@ class Board extends Component{
     computeShip1Grid(position, gridId){
         switch(position){
                 case 0: 
-                case 2: return [this.modifyGrid(false, 1, gridId, "H"), this.gridToRowAndCol(gridId),
-                                this.modifyGrid(true, 1, gridId, "H"), this.modifyGrid(true, 2, gridId, "H"),
-                                this.modifyGrid(true, 3, gridId, "H") ]
+                case 2: return [this.modifyGrid(false, 2, gridId, "H"), this.modifyGrid(false, 1, gridId, "H"), 
+                                this.gridToRowAndCol(gridId), this.modifyGrid(true, 1, gridId, "H"),
+                                this.modifyGrid(true, 2, gridId, "H") ]
                 case 1: 
-                case 3: return [this.modifyGrid(false, 1, gridId, "V"), this.gridToRowAndCol(gridId),
-                                this.modifyGrid(true, 1, gridId, "V"), this.modifyGrid(true, 2, gridId, "V"),
-                                this.modifyGrid(true, 3, gridId, "V") ]
+                case 3: return [this.modifyGrid(false, 2, gridId, "V"),this.modifyGrid(false, 1, gridId, "V"), 
+                                this.gridToRowAndCol(gridId), this.modifyGrid(true, 1, gridId, "V"),
+                                this.modifyGrid(true, 2, gridId, "V") ]
         }
     }
 
@@ -294,11 +311,11 @@ class Board extends Component{
         }
     }
 
-    computeOverlap(arr){
+    computeOverlap(arr, classId){
         for(var i = 0; i < arr.length; i++){
             var row = arr[i][0];
             var col = arr[i][1];
-            if(this.state.record[row-1][col-1] != 'empty'){
+            if((this.state.record[row-1][col-1] != 'empty') && (this.state.record[row-1][col-1] != classId)){
                 return true;
             }
         }
@@ -362,12 +379,12 @@ class Board extends Component{
         this.setState({record: rec,});
     }
 
-    renderSeparatePart(targetGrid, classId, position, dragFromContainer, shipImage){
+    renderSeparatePart(targetGrid, classId, position){
         switch(classId){
-            case 'bs1': this.renderShip1Part(position, targetGrid, dragFromContainer, shipImage);
+            case 'bs1': this.renderShip1Part(position, targetGrid);
                         this.setGridOccupied('bs1', targetGrid);
                         break;
-            case 'bs2': this.renderShip2Part(position, targetGrid, dragFromContainer, shipImage);
+            case 'bs2': this.renderShip2Part(position, targetGrid);
                         this.setGridOccupied('bs2', targetGrid);
                         break;
         }
@@ -401,7 +418,7 @@ class Board extends Component{
         }
     }
 
-    renderShip1Part(position, targetGrid, dragFromContainer, shipImage){
+    renderShip1Part(position, targetGrid){
         this.unrenderShip('bs1');
         var pushArr = [] //grids to render ship parts
         for(var i = 0; i < targetGrid.length; i++){//get all the gridId
@@ -410,10 +427,11 @@ class Board extends Component{
         for(i = 0; i < pushArr.length; i++){
             ReactDOM.render(<ImageParts id={'bs1_' + i} 
                                         src={this.addSeparateImage("battleShip1")} 
-                                        rotate={position} ship="battleShip1" 
+                                        rotate={position} 
+                                        ship="battleShip1" 
                                         partNo={i} 
                                         class="bs1"
-                                        shipImg={dragFromContainer ? shipImage : null}
+                                        shipImg={this.state.ImageDrag[0]}
                             />, 
                             document.getElementById(pushArr[i]));
         }
@@ -428,9 +446,11 @@ class Board extends Component{
         for(i = 0; i < pushArr.length; i++){
             ReactDOM.render(<ImageParts id={'bs2_' + i} 
                                         src={this.addSeparateImage("battleShip2")} 
-                                        rotate={position} ship="battleShip2" 
+                                        rotate={position} 
+                                        ship="battleShip2" 
                                         partNo={i}
                                         class="bs2"
+                                        shipImg={this.state.ImageDrag[1]}
                             />, 
                             document.getElementById(pushArr[i]));
         }
